@@ -99,13 +99,13 @@ func (c *ethConnector) attemptProcessingRevertData(ctx context.Context, errors [
 	return "", nil
 }
 
-func (c *ethConnector) callTransaction(ctx context.Context, tx *ethsigner.Transaction, method *abi.Entry, errors []*abi.Entry, blockNumber *string) (*fftypes.JSONAny, ffcapi.ErrorReason, error) {
+func (c *ethConnector) callTransaction(ctx context.Context, tx *ethsigner.Transaction, method *abi.Entry, errors []*abi.Entry, blockNumber *fftypes.FFBigInt) (*fftypes.JSONAny, ffcapi.ErrorReason, error) {
 
 	// Do the raw call
 	var outputData ethtypes.HexBytes0xPrefix
 	blockNumberStr := "latest"
 	if blockNumber != nil {
-		blockNumberStr = *blockNumber
+		blockNumberStr = blockNumber.String()
 	}
 	rpcErr := c.backend.CallRPC(ctx, &outputData, "eth_call", tx, blockNumberStr)
 	if rpcErr != nil {
